@@ -1,6 +1,6 @@
 import base64
 def d(p,mt): return f'data:{mt};base64,'+base64.b64encode(open(p,'rb').read()).decode()
-SITE_URL=''  # e.g. https://jogabolito.netlify.app -- fill once known
+SITE_URL='https://fcjogabolito.netlify.app'  # e.g. https://jogabolito.netlify.app -- fill once known
 OG=('<meta property="og:type" content="website">\n<meta property="og:title" content="Joga Bolíto F.C.">\n<meta property="og:description" content="Zápasy, tabulka, hráči a rewards. Hanspaulská liga Praha.">\n<meta property="og:image" content="'+SITE_URL+('/' if SITE_URL else '')+'og.jpg">\n<meta name="twitter:card" content="summary_large_image">\n<meta name="theme-color" content="#121016">')
 import subprocess,os
 subprocess.run(['python3','gen_fallback.py'],check=True)
