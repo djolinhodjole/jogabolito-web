@@ -389,6 +389,7 @@ function showPage(){
   window.scrollTo(0,0);
 }
 window.addEventListener("hashchange",showPage);
+window.addEventListener("hashchange",()=>{try{const p=(location.hash||"").replace("#","")||"domu";if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"/"+p,title:p});}catch(e){}});
 showPage();
 
 document.addEventListener("click",e=>{
