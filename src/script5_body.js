@@ -299,7 +299,6 @@ function cardBack(name){
   const opp=k=>(S.byKolo[k]||{}).Souper||"";
   const facts=[];
   if(playedLogs.length){
-    const d=playedLogs[0]; facts.push([T("f_debut"),`${T("round_n")(d.k)} · vs ${esc(opp(d.k))}`]);
     const best=[...playedLogs].sort((x,y)=>(y.g+y.a)-(x.g+x.a)||y.g-x.g||n(x.k)-n(y.k))[0];
     if(best&&best.g+best.a>0){const p=[];if(best.g)p.push(T("goals")(best.g));if(best.a)p.push(T("assists")(best.a));
       facts.push([T("f_best"),`${T("round_n")(best.k)} · vs ${esc(opp(best.k))} · ${p.join(", ")}`]);}
