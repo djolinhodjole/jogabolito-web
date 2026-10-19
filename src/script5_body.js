@@ -406,9 +406,8 @@ document.addEventListener("click",e=>{
   const root=document.documentElement;
   const get=k=>{try{return localStorage.getItem(k);}catch(e){return null;}};
   const put=(k,v)=>{try{localStorage.setItem(k,v);}catch(e){}};
-  const sys=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";
   const setTheme=t=>{root.setAttribute("data-jb",t);$("theme").setAttribute("aria-pressed",String(t==="dark"));};
-  setTheme(get("jb-theme")||root.getAttribute("data-theme")||sys);
+  setTheme(get("jb-theme")||"light");
   $("theme").addEventListener("click",()=>{const t=root.getAttribute("data-jb")==="dark"?"light":"dark";setTheme(t);put("jb-theme",t);});
   LANG=get("jb-lang")==="en"?"en":"cs";
   $("lang").addEventListener("click",()=>{LANG=LANG==="cs"?"en":"cs";put("jb-lang",LANG);render();});
