@@ -20,7 +20,7 @@ const I18N={
   rw_title:"Jak funguje Rewards",rw_text:"Z týmové kasičky dostává hráč odměnu za každý svůj gól, asistenci a vychytanou nulu. Čím víc pomůže týmu, tím víc dostane.",
   per_goal:"Za gól",per_assist:"Za asistenci",per_cs:"Za vychytanou nulu",most_rw:"Nejvíc rewards",
   goals:x=>`${x} ${x===1?"gól":x>=2&&x<=4?"góly":"gólů"}`,assists:x=>`${x} ${x===1?"asistence":x>=2&&x<=4?"asistence":"asistencí"}`,
-  injured:"Zraněný",out:"Mimo soupisku",open_card:"otevřít kartu",idle:"Nenastoupil",inj_out:"Zraněný – nehrál",tab_wait:k=>`Tabulka je po ${k}. kole. Aktualizujeme ji, jakmile ji zveřejní PSMF.`,tab_wait_short:"Čekáme na PSMF",photo_soon:"Fotka brzy",facts:"Fakta",f_debut:"Debut",f_best:"Nejlepší zápas",f_avg:"G/A na zápas",f_share:"Podíl na gólech týmu",season_stats:"Statistiky sezóny",per_match:"Zápas po zápase",tap:"Statistiky ↻",detail:"Detail po zápasech →",
+  injured:"Zraněný",out:"Mimo soupisku",open_card:"otevřít kartu",idle:"Nenastoupil",inj_out:"Zraněný – nehrál",tab_wait:k=>`Tabulka je po ${k}. kole. Aktualizujeme ji, jakmile ji zveřejní PSMF.`,tab_wait_short:"Čekáme na PSMF",tab_behind_short:"Zápasy k dohrání",tab_behind:(l,m)=>`Ne všechny týmy mají odehráno ${m} zápasů: ${l}. Pořadí se ještě může změnit.`,photo_soon:"Fotka brzy",facts:"Fakta",f_debut:"Debut",f_best:"Nejlepší zápas",f_avg:"G/A na zápas",f_share:"Podíl na gólech týmu",season_stats:"Statistiky sezóny",per_match:"Zápas po zápase",tap:"Statistiky ↻",detail:"Detail po zápasech →",
   k_m:"zápasy",k_g:"góly",k_a:"asistence",k_y:"žluté",k_r:"červené",k_cs:"vychytané nuly",
   t_m:"Zápasy",t_g:"Góly",t_a:"Asistence",t_y:"Žluté karty",t_r:"Červené karty",t_cs:"Vychytané nuly",ga:"G/A",
   matches_h:"Zápasy",md_open:"detail zápasu",md_tbd:"Zápas se ještě nehrál.",md_timeline:"Průběh zápasu",md_goals:"Góly",md_assists:"Asistence",md_none:"Střelci k tomuto zápasu zatím nejsou doplnění.",md_note:"Přesné minuty a soupeřovy střelce doplníme od dalších zápasů.",notes:{"zranění":"zranění"},played:"✓ odehráno",cs_one:"vychytaná nula",yellow:"žlutá",red:"červená",none:"Zatím bez odehraného zápasu.",close:"Zavřít",
@@ -38,7 +38,7 @@ const I18N={
   rw_title:"How Rewards work",rw_text:"Every goal, assist and clean sheet earns the player a reward from the team kitty. The more you help the team, the more you get.",
   per_goal:"Per goal",per_assist:"Per assist",per_cs:"Per clean sheet",most_rw:"Most rewards",
   goals:x=>`${x} goal${x===1?"":"s"}`,assists:x=>`${x} assist${x===1?"":"s"}`,
-  injured:"Injured",out:"Not in squad",open_card:"open card",idle:"Didn't play",inj_out:"Injured – didn't play",tab_wait:k=>`Table shown after round ${k}. We'll update it as soon as PSMF publishes it.`,tab_wait_short:"Waiting for PSMF",photo_soon:"Photo coming soon",facts:"Facts",f_debut:"Debut",f_best:"Best match",f_avg:"G/A per match",f_share:"Share of team goals",season_stats:"Season stats",per_match:"Match by match",tap:"Stats ↻",detail:"Match by match →",
+  injured:"Injured",out:"Not in squad",open_card:"open card",idle:"Didn't play",inj_out:"Injured – didn't play",tab_wait:k=>`Table shown after round ${k}. We'll update it as soon as PSMF publishes it.`,tab_wait_short:"Waiting for PSMF",tab_behind_short:"Games in hand",tab_behind:(l,m)=>`Not every team has played ${m} matches yet: ${l}. The standings may still change.`,photo_soon:"Photo coming soon",facts:"Facts",f_debut:"Debut",f_best:"Best match",f_avg:"G/A per match",f_share:"Share of team goals",season_stats:"Season stats",per_match:"Match by match",tap:"Stats ↻",detail:"Match by match →",
   k_m:"matches",k_g:"goals",k_a:"assists",k_y:"yellow",k_r:"red",k_cs:"clean sheets",
   t_m:"Matches",t_g:"Goals",t_a:"Assists",t_y:"Yellow cards",t_r:"Red cards",t_cs:"Clean sheets",ga:"G/A",
   matches_h:"Matches",md_open:"match details",md_tbd:"This match hasn't been played yet.",md_timeline:"Match timeline",md_goals:"Goals",md_assists:"Assists",md_none:"Scorers for this match haven't been added yet.",md_note:"Exact minutes and opposition scorers will be added from the next matches.",notes:{"zranění":"injured"},played:"✓ played",cs_one:"clean sheet",yellow:"yellow",red:"red",none:"No matches yet.",close:"Close",
@@ -173,7 +173,10 @@ function render(){
   const tab=(data.Tabulka||[]).filter(t=>has(t.Tym)).sort((x,y)=>n(x.Poradi)-n(y.Poradi));
   const nT=tab.length;
   {const tr=me?n(me.Z):0; const lastPlayed=last?n(last.Kolo):0; const box=$("table-note");
-   if(box){ if(me&&lastPlayed>tr){box.hidden=false;box.innerHTML=`<span class="tn-dot" aria-hidden="true"></span><span><b>${T("tab_wait_short")}</b> ${T("tab_wait")(tr)}</span>`;} else box.hidden=true; } }
+   if(box){ const maxZ=Math.max(0,...tab.map(t=>n(t.Z))); const behind=tab.filter(t=>n(t.Z)<maxZ);
+     if(me&&lastPlayed>tr){box.hidden=false;box.classList.remove("calm");box.innerHTML=`<span class="tn-dot" aria-hidden="true"></span><span><b>${T("tab_wait_short")}</b> ${T("tab_wait")(tr)}</span>`;}
+     else if(behind.length){box.hidden=false;box.classList.add("calm");box.innerHTML=`<span class="tn-dot" aria-hidden="true"></span><span><b>${T("tab_behind_short")}</b> ${T("tab_behind")(behind.map(t=>`${esc(t.Tym)} (${n(t.Z)})`).join(", "),maxZ)}</span>`;}
+     else box.hidden=true; } }
   $("league").innerHTML=tab.map(t=>{const p=n(t.Poradi);
     const cls=[p<=3?"up":"",p>nT-3?"down":"",(t.Tym||"").toLowerCase().includes("joga")?"me":""].join(" ");
     return `<tr class="${cls}"><td class="pos">${p}.</td><td class="team">${esc(t.Tym)}</td><td>${esc(t.Z)}</td><td>${esc(t.V)}</td><td>${esc(t.R)}</td><td>${esc(t.P)}</td><td>${esc(t.Skore)}</td><td class="pts">${esc(t.Body)}</td></tr>`}).join("");
