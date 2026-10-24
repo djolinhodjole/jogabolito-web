@@ -8,12 +8,13 @@ b=open('script5_body.js',encoding='utf-8').read();f=open('fallback.js',encoding=
 open('script5.js','w',encoding='utf-8').write(b.replace('__FALLBACK__',f))
 t=open('template5.html',encoding='utf-8').read()
 rep={'__CREST_NAVY__':d('crest_navy_s.png','image/png'),'__CREST_CREAM__':d('crest_cream_s.png','image/png'),
- '__IMG_HUDDLE__':d('bw_huddle.jpg','image/jpeg'),'__IMG_HUDDLE2__':d('bw_huddle2.jpg','image/jpeg'),'__IMG_FELIX__':d('bw_felix.jpg','image/jpeg'),'__IMG_TEAMWIN__':d('bw_teamwin.jpg','image/jpeg'),'__IMG_KEEPER__':d('bw_keeper.jpg','image/jpeg'),
- '__IMG_UNBOX__':d('bw_unbox.jpg','image/jpeg'),'__IMG_TEAM__':d('bw_team.jpg','image/jpeg'),
+ '__IMG_HUDDLE2__':'img/huddle2.jpg','__IMG_FELIX__':'img/felix.jpg','__IMG_TEAMWIN__':'img/teamwin.jpg','__IMG_KEEPER__':'img/keeper.jpg',
+ '__IMG_UNBOX__':'img/unbox.jpg',
  '__SCRIPT__':open('script5.js',encoding='utf-8').read()}
-rep['__FLAG__']=d('flag.png','image/png')
 t=t.replace('__SCRIPT__',rep.pop('__SCRIPT__'))
 for k,v in rep.items(): t=t.replace(k,v)
-os.makedirs('../public',exist_ok=True)
+os.makedirs('../public/img',exist_ok=True)
+import shutil
+for s_,t_ in [('bw_huddle2.jpg','huddle2'),('bw_felix.jpg','felix'),('bw_teamwin.jpg','teamwin'),('bw_keeper.jpg','keeper'),('bw_unbox.jpg','unbox')]: shutil.copy(s_,'../public/img/'+t_+'.jpg')
 i=t.index('<style>'); head=t[:i]; rest=t[i:]; j=rest.index('</style>')+len('</style>')
 open('../public/index.html','w',encoding='utf-8').write('<!doctype html>\n<html lang="cs">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'+head+rest[:j]+'\n<link rel="icon" href="'+rep['__CREST_NAVY__']+'">\n<link rel="apple-touch-icon" href="icon.png">\n'+OG+'\n</head>\n<body>\n'+rest[j:]+'\n</body>\n</html>\n')
