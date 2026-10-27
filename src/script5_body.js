@@ -4,7 +4,7 @@
 const SHEET_ID = "";
 
 __FALLBACK__
-FALLBACK.Tabulka=[[1,"Bílá dáma",6,6,0,0,"45:10",12],[2,"Joga Bolíto",6,4,0,2,"37:11",8],[3,"Halandovo kladivo FK",5,4,0,1,"27:11",8],[4,"Kung Funited",6,3,2,1,"19:7",8],[5,"Milion plus xG",5,3,0,2,"26:10",6],[6,"Kopačky na pivu",6,3,0,3,"21:17",6],[7,"Příkopy FC",5,2,0,3,"16:13",4],[8,"Lobotomici",4,1,2,1,"11:14",4],[9,"Medfúci",5,1,2,2,"8:22",4],[10,"Páni pivsonů FC",6,1,1,4,"7:28",3],[11,"Prague Underground",6,0,2,4,"7:43",2],[12,"G Yetti Maniacs",6,0,1,5,"4:42",1]]
+FALLBACK.Tabulka=[[1,"Bílá dáma",7,7,0,0,"60:13",14],[2,"Joga Bolíto",7,5,0,2,"46:12",10],[3,"Halandovo kladivo FK",6,5,0,1,"31:13",10],[4,"Milion plus xG",6,4,0,2,"34:10",8],[5,"Kung Funited",7,3,2,2,"20:16",8],[6,"Lobotomici",6,2,2,2,"17:20",6],[7,"Kopačky na pivu",7,3,0,4,"24:32",6],[8,"Medfúci",6,2,2,2,"14:22",6],[9,"Páni pivsonů FC",7,2,1,4,"8:28",5],[10,"Příkopy FC",7,2,0,5,"18:23",4],[11,"Prague Underground",7,0,2,5,"7:44",2],[12,"G Yetti Maniacs",7,0,1,6,"4:50",1]]
   .map(([Poradi,Tym,Z,V,R,P,Skore,Body])=>({Poradi,Tym,Z,V,R,P,Skore,Body}));
 
 /* ===== Texty CZ / EN ===== */
