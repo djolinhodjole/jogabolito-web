@@ -94,13 +94,14 @@ function compute(data){
   const price=k=>{const r=data.Odmeny.find(o=>(o.Polozka||"").toLowerCase().startsWith(k));return r?n(r.Castka):0};
   const P={g:price("gól"),a:price("asist"),cs:price("vychyt")};
   const tot={};
+  const NO_KC=new Set(["Ossko"]); // hráči bez odměn (nezaplatili do kasičky)
   const get=k=>tot[k]||(tot[k]={name:k,g:0,a:0,cs:0,y:0,r:0,kc:0,rounds:new Set(),log:[]});
   for(const p of players) get(p.Jmeno.trim());
   for(const s of data.Statistiky){ if(!has(s.Hrac)) continue;
     const t=get(s.Hrac.trim());
     const g=n(s.Goly),a=n(s.Asistence),cs=n(s.Nula),y=n(s.Zlute),r=n(s.Cervene);
     const k=has(s.Kolo)?String(n(s.Kolo)):"";
-    t.g+=g;t.a+=a;t.cs+=cs;t.y+=y;t.r+=r;t.kc+=(g*P.g+a*P.a+cs*P.cs)*(k?mult(k):1);
+    t.g+=g;t.a+=a;t.cs+=cs;t.y+=y;t.r+=r;if(!NO_KC.has(s.Hrac.trim())) t.kc+=(g*P.g+a*P.a+cs*P.cs)*(k?mult(k):1);
     if(k){t.rounds.add(k);t.log.push({k,g,a,cs,y,r,note:(s.Poznamka||"").trim()});}
   }
   return {players,info,matches,byKolo,P,tot,list:Object.values(tot)};
